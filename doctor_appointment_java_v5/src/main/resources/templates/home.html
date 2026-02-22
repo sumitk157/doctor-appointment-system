@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Home</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dark-body">
+<div class="app-container fade-in parallax-bg">
+<nav class="top-nav">
+ <div class="brand">🩺 Doctor Appointment</div>
+ <div class="nav-links">
+   <a th:href="@{/home}">Home</a>
+   <a th:href="@{/logout}">Logout</a>
+ </div>
+</nav>
+<main class="main-content">
+ <h1 class="page-title">Home Menu</h1>
+ <div class="grid-3">
+   <a class="card btn-card" th:href="@{/dashboard}">Dashboard</a>
+   <a class="card btn-card" th:href="@{/doctors}">Doctors</a>
+   <a class="card btn-card" th:href="@{/patients}">Patients</a>
+   <a class="card btn-card" th:href="@{/appointments}">Appointments</a>
+   <a class="card btn-card" th:href="@{/appointments/export}">Export CSV</a>
+ </div>
+</main>
+</div>
+</body>
+</html>

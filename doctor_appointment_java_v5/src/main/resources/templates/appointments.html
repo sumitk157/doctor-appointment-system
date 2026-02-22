@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointments - Doctor Appointment</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/main.js}"></script>
+</head>
+<body class="dark-body">
+    <div class="app-container fade-in parallax-bg">
+
+        <nav class="top-nav">
+            <div class="brand" data-en="🩺 Doctor Appointment" data-hi="🩺 डॉक्टर अपॉइंटमेंट">
+                🩺 Doctor Appointment
+            </div>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}" data-en="Dashboard" data-hi="डैशबोर्ड">Dashboard</a>
+                <a th:href="@{/doctors}" data-en="Doctors" data-hi="डॉक्टर">Doctors</a>
+                    <a th:href="@{/patients}" data-en="Patients" data-hi="पेशेंट">Patients</a>
+                <a th:href="@{/appointments}" data-en="Appointments" data-hi="अपॉइंटमेंट">Appointments</a>
+                <a th:href="@{/logout}" data-en="Logout" data-hi="लॉगआउट">Logout</a>
+            </div>
+            <button type="button" class="lang-toggle" id="langToggle" data-lang="en">
+                EN / HI
+            </button>
+        </nav>
+
+        <main class="main-content">
+            <div class="page-header page-header-row">
+                <h1 class="page-title" data-en="Appointments" data-hi="अपॉइंटमेंट">Appointments</h1>
+                <a th:href="@{/appointments/export}" class="btn-small export-btn hover-lift"
+                   data-en="Export CSV" data-hi="CSV निर्यात करें">
+                    Export CSV
+                </a>
+            </div>
+
+            <div class="grid-2">
+                <div class="card slide-up glow-card">
+                    <h3 data-en="Book Appointment" data-hi="अपॉइंटमेंट बुक करें">Book Appointment</h3>
+                    <form method="post" th:action="@{/appointments}">
+                        <div class="form-group">
+                            <label data-en="Doctor" data-hi="डॉक्टर">Doctor</label>
+                            <select name="doctorId" required>
+                                <option th:each="d : ${doctors}" th:value="${d.id}" th:text="${d.name}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Patient" data-hi="पेशेंट">Patient</label>
+                            <select name="patientId" required>
+                                <option th:each="p : ${patients}" th:value="${p.id}" th:text="${p.name}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Date" data-hi="तारीख">Date</label>
+                            <input type="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Time (HH:MM)" data-hi="समय (HH:MM)">Time (HH:MM)</label>
+                            <input type="time" name="time" required>
+                        </div>
+                        <button type="submit" class="btn-primary hover-lift" data-en="Book" data-hi="बुक करें">
+                            Book
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card slide-up glow-card" style="animation-delay:0.1s">
+                    <h3 data-en="All Appointments" data-hi="सभी अपॉइंटमेंट">All Appointments</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th data-en="Doctor" data-hi="डॉक्टर">Doctor</th>
+                                <th data-en="Patient" data-hi="पेशेंट">Patient</th>
+                                <th data-en="Date" data-hi="तारीख">Date</th>
+                                <th data-en="Time" data-hi="समय">Time</th>
+                                <th data-en="Status" data-hi="स्थिति">Status</th>
+                                    <th data-en="Actions" data-hi="क्रिया">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="a : ${appointments}">
+                                <td th:text="${a.id}">1</td>
+                                <td th:text="${a.doctor.name}">Doc</td>
+                                <td th:text="${a.patient.name}">Patient</td>
+                                <td th:text="${a.date}">2025-01-01</td>
+                                <td th:text="${a.timeSlot}">10:00</td>
+                                <td th:text="${a.status}">BOOKED</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+                <!-- Edit appointment modal -->
+                <div id="editAppointmentModal" class="face-modal hidden">
+                    <div class="face-modal-content card glow-card">
+                        <h3 data-en="Edit Appointment" data-hi="अपॉइंटमेंट संपादित करें">Edit Appointment</h3>
+                        <form id="editAppointmentForm" method="post">
+                            <div class="form-group">
+                                <label data-en="Date" data-hi="तारीख">Date</label>
+                                <input id="editAppDate" name="date" type="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-en="Time (HH:MM)" data-hi="समय (HH:MM)">Time (HH:MM)</label>
+                                <input id="editAppTime" name="time" type="time" required>
+                            </div>
+                            <div class="face-actions">
+                                <button class="btn-primary hover-lift" type="submit" data-en="Update" data-hi="अपडेट करें">
+                                    Update
+                                </button>
+                                <button type="button" class="btn-small hover-lift" onclick="closeEditAppointmentModal()" data-en="Close" data-hi="बंद करें">
+                                    Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+</main>
+    </div>
+</body>
+</html>

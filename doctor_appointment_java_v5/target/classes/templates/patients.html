@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients - Doctor Appointment</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/main.js}"></script>
+</head>
+<body class="dark-body">
+    <div class="app-container fade-in parallax-bg">
+        <nav class="top-nav">
+            <div class="brand" data-en="🩺 Doctor Appointment" data-hi="🩺 डॉक्टर अपॉइंटमेंट">
+                🩺 Doctor Appointment
+            </div>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}" data-en="Dashboard" data-hi="डैशबोर्ड">Dashboard</a>
+                <a th:href="@{/doctors}" data-en="Doctors" data-hi="डॉक्टर">Doctors</a>
+                <a th:href="@{/patients}" class="active" data-en="Patients" data-hi="पेशेंट">Patients</a>
+                <a th:href="@{/appointments}" data-en="Appointments" data-hi="अपॉइंटमेंट">Appointments</a>
+                <a th:href="@{/logout}" data-en="Logout" data-hi="లాగ్‌అవుట్">Logout</a>
+            </div>
+            <button type="button" class="lang-toggle" id="langToggle" data-lang="en">
+                EN / HI
+            </button>
+        </nav>
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title" data-en="Patients" data-hi="पेशेंट">Patients</h1>
+            </div>
+
+            <div class="grid-2">
+                <div class="card slide-up glow-card">
+                    <h3 data-en="Add Patient" data-hi="पेशेंट जोड़ें">Add Patient</h3>
+                    <form method="post" th:action="@{/patients}">
+                        <div class="form-group">
+                            <label data-en="Name" data-hi="नाम">Name</label>
+                            <input type="text" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Phone" data-hi="फोन">Phone</label>
+                            <input type="text" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Gender" data-hi="लिंग">Gender</label>
+                            <select name="gender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary hover-lift" data-en="Save" data-hi="सेव">Save</button>
+                    </form>
+                </div>
+
+                <div class="card slide-up glow-card" style="animation-delay:0.1s">
+                    <h3 data-en="All Patients" data-hi="सभी पेशेंट">All Patients</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th data-en="Name" data-hi="नाम">Name</th>
+                                <th data-en="Phone" data-hi="फोन">Phone</th>
+                                <th data-en="Gender" data-hi="लिंग">Gender</th>
+                                <th data-en="Face" data-hi="चेहरा">Face</th>
+                                <th data-en="Actions" data-hi="क्रिया">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${patients}">
+                                <td th:text="${p.id}">1</td>
+                                <td th:text="${p.name}">Name</td>
+                                <td th:text="${p.phone}">Phone</td>
+                                <td th:text="${p.gender}">Gender</td>
+                                <td>
+                                    <img th:if="${p.faceImageBase64 != null}" th:src="'data:image/png;base64,' + ${p.faceImageBase64}" class="face-avatar" alt="face">
+                                    <span class="muted small" th:if="${p.faceImageBase64 == null}" data-en="No image" data-hi="कोई इमेज नहीं">No image</span>
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            class="btn-small hover-lift"
+                                            th:attr="data-patient-id=${p.id}"
+                                            data-en="Capture Face" data-hi="चेहरा कैप्चर करें"
+                                            onclick="openFaceCaptureModal(this)">
+                                        Capture Face
+                                    </button>
+                                    <form th:action="@{'/patients/delete/' + ${p.id}}" method="post" style="display:inline">
+                                        <button class="btn-small danger hover-lift" data-en="Delete" data-hi="हटाएँ">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Face capture modal -->
+            <div id="faceCaptureModal" class="face-modal hidden">
+                <div class="face-modal-content card glow-card">
+                    <h3 data-en="Face Capture" data-hi="चेहरा कैप्चर">Face Capture</h3>
+                    <p class="muted small" data-en="Align your face in the frame and click Capture."
+                       data-hi="अपना चेहरा फ्रेम में रखें और कैप्चर पर क्लिक करें।">
+                       Align your face in the frame and click Capture.
+                    </p>
+                    <div class="face-video-row">
+                        <video id="faceVideo" autoplay playsinline></video>
+                        <canvas id="faceCanvas" class="hidden"></canvas>
+                    </div>
+                    <div class="face-actions">
+                        <button type="button" class="btn-small hover-lift" onclick="captureFaceFrame()" data-en="Capture" data-hi="कैप्चर">Capture</button>
+                        <button type="button" class="btn-small hover-lift" onclick="closeFaceCaptureModal()" data-en="Close" data-hi="बंद करें">Close</button>
+                    </div>
+                    <form id="faceUploadForm" method="post">
+                        <input type="hidden" name="imageData" id="faceImageData">
+                    </form>
+                </div>
+            </div>
+
+        
+                <!-- Edit patient modal -->
+                <div id="editPatientModal" class="face-modal hidden">
+                    <div class="face-modal-content card glow-card">
+                        <h3 data-en="Edit Patient" data-hi="पेशेंट संपादित करें">Edit Patient</h3>
+                        <form id="editPatientForm" method="post">
+                            <div class="form-group">
+                                <label data-en="Name" data-hi="नाम">Name</label>
+                                <input id="editName" name="name" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-en="Phone" data-hi="फोन">Phone</label>
+                                <input id="editPhone" name="phone" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-en="Gender" data-hi="लिंग">Gender</label>
+                                <select id="editGender" name="gender">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="face-actions">
+                                <button class="btn-primary hover-lift" type="submit" data-en="Update" data-hi="अपडेट करें">
+                                    Update
+                                </button>
+                                <button type="button" class="btn-small hover-lift" onclick="closeEditPatientModal()" data-en="Close" data-hi="बंद करें">
+                                    Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+</main>
+    </div>
+</body>
+</html>

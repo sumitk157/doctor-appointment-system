@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctors - Doctor Appointment</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/main.js}"></script>
+</head>
+<body class="dark-body">
+    <div class="app-container fade-in parallax-bg">
+
+        <nav class="top-nav">
+            <div class="brand" data-en="🩺 Doctor Appointment" data-hi="🩺 डॉक्टर अपॉइंटमेंट">
+                🩺 Doctor Appointment
+            </div>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}" data-en="Dashboard" data-hi="डैशबोर्ड">Dashboard</a>
+                <a th:href="@{/doctors}" data-en="Doctors" data-hi="डॉक्टर">Doctors</a>
+                    <a th:href="@{/patients}" data-en="Patients" data-hi="पेशेंट">Patients</a>
+                <a th:href="@{/appointments}" data-en="Appointments" data-hi="अपॉइंटमेंट">Appointments</a>
+                <a th:href="@{/logout}" data-en="Logout" data-hi="लॉगआउट">Logout</a>
+            </div>
+            <button type="button" class="lang-toggle" id="langToggle" data-lang="en">
+                EN / HI
+            </button>
+        </nav>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title" data-en="Doctors" data-hi="डॉक्टर">Doctors</h1>
+            </div>
+
+            <div class="grid-2">
+                <div class="card slide-up glow-card">
+                    <h3 data-en="Add Doctor" data-hi="डॉक्टर जोड़ें">Add Doctor</h3>
+                    <form method="post" th:action="@{/doctors}">
+                        <div class="form-group">
+                            <label data-en="Name" data-hi="नाम">Name</label>
+                            <input type="text" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Specialization" data-hi="विशेषज्ञता">Specialization</label>
+                            <input type="text" name="specialization" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Phone" data-hi="फोन">Phone</label>
+                            <input type="text" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Timing" data-hi="समय">Timing</label>
+                            <input type="text" name="timing" placeholder="10:00 AM - 1:00 PM" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Login Email (optional)" data-hi="लॉगिन ईमेल (विकल्प)">Login Email (optional)</label>
+                            <input type="email" name="email" placeholder="doctor@hospital.com">
+                        </div>
+                        <button type="submit" class="btn-primary hover-lift" data-en="Save" data-hi="सेव">Save</button>
+                    </form>
+                </div>
+
+                <div class="card slide-up glow-card" style="animation-delay:0.1s">
+                    <h3 data-en="All Doctors" data-hi="सभी डॉक्टर">All Doctors</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-en="Name" data-hi="नाम">Name</th>
+                                <th data-en="Specialization" data-hi="विशेषज्ञता">Specialization</th>
+                                <th data-en="Phone" data-hi="फोन">Phone</th>
+                                <th data-en="Timing" data-hi="समय">Timing</th>
+                                <th data-en="Email" data-hi="ईमेल">Email</th>
+                                <th data-en="Action" data-hi="क्रिया">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="doc : ${doctors}">
+                                <td th:text="${doc.name}">Name</td>
+                                <td th:text="${doc.specialization}">Spec</td>
+                                <td th:text="${doc.phone}">Phone</td>
+                                <td th:text="${doc.timing}">Timing</td>
+                                <td th:text="${doc.email}">Email</td>
+                                <td>
+                                    <form th:action="@{'/doctors/delete/' + ${doc.id}}" method="post">
+                                        <button class="btn-small danger hover-lift" data-en="Delete" data-hi="हटाएँ">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

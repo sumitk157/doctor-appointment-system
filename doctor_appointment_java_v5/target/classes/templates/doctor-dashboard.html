@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Dashboard - Doctor Appointment</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/main.js}"></script>
+</head>
+<body class="dark-body">
+    <div class="app-container fade-in parallax-bg">
+        <nav class="top-nav">
+            <div class="brand" data-en="🩺 Doctor Portal" data-hi="🩺 डॉक्टर पोर्टल">
+                🩺 Doctor Portal
+            </div>
+            <div class="nav-links">
+                <a th:href="@{/doctor/dashboard}" class="active" data-en="My Dashboard" data-hi="मेरा डैशबोर्ड">
+                    My Dashboard
+                </a>
+                <a th:href="@{/appointments}" data-en="All Appointments" data-hi="सभी अपॉइंटमेंट">
+                    All Appointments
+                </a>
+                <a th:href="@{/logout}" data-en="Logout" data-hi="लॉगआउट">Logout</a>
+            </div>
+            <button type="button" class="lang-toggle" id="langToggle" data-lang="en">
+                EN / HI
+            </button>
+        </nav>
+        <main class="main-content">
+            <div th:if="${hasDoctorProfile}">
+                <h1 class="page-title">
+                    <span data-en="Welcome," data-hi="स्वागत है,">Welcome,</span>
+                    <span th:text="${doctor.name}">Doctor Name</span> 👋
+                </h1>
+
+                <div class="grid-3">
+                    <div class="stat-card float-in glow-card">
+                        <span class="label" data-en="My Appointments" data-hi="मेरे अपॉइंटमेंट">My Appointments</span>
+                        <span class="value" th:text="${appointmentCount}">0</span>
+                    </div>
+                    <div class="stat-card float-in glow-card" style="animation-delay:0.1s">
+                        <span class="label" data-en="Specialization" data-hi="विशेषज्ञता">Specialization</span>
+                        <span class="value small" th:text="${doctor.specialization}">Cardio</span>
+                    </div>
+                    <div class="stat-card float-in glow-card" style="animation-delay:0.2s">
+                        <span class="label" data-en="Timing" data-hi="समय">Timing</span>
+                        <span class="value small" th:text="${doctor.timing}">10:00 - 1:00</span>
+                    </div>
+                </div>
+
+                <div class="card slide-up glow-card" style="margin-top:20px;">
+                    <h3 data-en="My Appointments" data-hi="मेरे अपॉइंटमेंट">My Appointments</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th data-en="Patient" data-hi="पेशेंट">Patient</th>
+                                <th data-en="Date" data-hi="तारीख">Date</th>
+                                <th data-en="Time" data-hi="समय">Time</th>
+                                <th data-en="Status" data-hi="स्थिति">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="a : ${appointments}">
+                                <td th:text="${a.id}">1</td>
+                                <td th:text="${a.patient.name}">Patient</td>
+                                <td th:text="${a.date}">2025-01-01</td>
+                                <td th:text="${a.timeSlot}">10:00</td>
+                                <td th:text="${a.status}">BOOKED</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div th:if="${!hasDoctorProfile}">
+                <div class="card slide-up glow-card">
+                    <h2 data-en="No doctor profile linked" data-hi="कोई डॉक्टर प्रोफाइल लिंक नहीं है">
+                        No doctor profile linked
+                    </h2>
+                    <p class="muted" data-en="Ask admin to link your login email with a doctor profile."
+                       data-hi="एडमिन से कहें कि आपका लॉगिन ईमेल किसी डॉक्टर प्रोफाइल से लिंक करें।">
+                        Ask admin to link your login email with a doctor profile.
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

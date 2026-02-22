@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Doctor Appointment</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/main.js}"></script>
+</head>
+<body class="dark-body center-body">
+    <div class="card slide-up glow-card">
+        <h2 data-en="Welcome Back" data-hi="वापसी पर स्वागत है">Welcome Back</h2>
+        <p class="subtitle" data-en="Doctor Appointment System" data-hi="डॉक्टर अपॉइंटमेंट सिस्टम">
+            Doctor Appointment System
+        </p>
+        <form method="post" th:action="@{/login}">
+            <div class="form-group">
+                <label data-en="Email" data-hi="ईमेल">Email</label>
+                <input type="text" name="username" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label data-en="Password" data-hi="पासवर्ड">Password</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary hover-lift" data-en="Login" data-hi="लॉगिन">Login</button>
+        </form>
+        <p class="muted mt-2">
+            <span data-en="New here?" data-hi="नए हैं?">New here?</span>
+            <a th:href="@{/signup}" data-en="Create account" data-hi="खाता बनाएं">Create account</a>
+        </p>
+        <div class="muted mt-2 small">
+            <div data-en="Default admin: admin@example.com / admin123"
+                 data-hi="डिफॉल्ट एडमिन: admin@example.com / admin123">
+                Default admin: admin@example.com / admin123
+            </div>
+            <div data-en="Default doctor: anuj@hospital.com / doctor123"
+                 data-hi="डिफॉल्ट डॉक्टर: anuj@hospital.com / doctor123">
+                Default doctor: anuj@hospital.com / doctor123
+            </div>
+        </div>
+        <button type="button" class="lang-toggle" id="langToggle" data-lang="en">
+            EN / HI
+        </button>
+    </div>
+</body>
+</html>

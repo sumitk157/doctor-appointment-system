@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up - Doctor Appointment</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/main.js}"></script>
+</head>
+<body class="dark-body center-body">
+    <div class="card slide-up glow-card">
+        <h2 data-en="Create Patient Account" data-hi="पेशेंट खाता बनाएँ">Create Patient Account</h2>
+        <form method="post" th:action="@{/signup}">
+            <div class="form-group">
+                <label data-en="Full Name" data-hi="पूरा नाम">Full Name</label>
+                <input type="text" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label data-en="Email" data-hi="ईमेल">Email</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label data-en="Password" data-hi="पासवर्ड">Password</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit" class="btn-primary hover-lift" data-en="Sign Up" data-hi="साइन अप">Sign Up</button>
+        </form>
+        <p class="muted mt-2">
+            <span data-en="Already have account?" data-hi="पहले से खाता है?">Already have account?</span>
+            <a th:href="@{/login}" data-en="Login" data-hi="लॉगिन">Login</a>
+        </p>
+        <button type="button" class="lang-toggle" id="langToggle" data-lang="en">
+            EN / HI
+        </button>
+    </div>
+</body>
+</html>
